@@ -31,9 +31,27 @@ class UserRepository {
     
             return user;
 
-        }catch(err){
-            console.log(err)
-            throw new DatabaseError('Erro na consulta por ID', err);
+        }catch(error){
+            console.log(error)
+            throw new DatabaseError('Erro na consulta por ID', error);
+        }
+    }
+
+    async findByUsernameAndPassword(username: string, password: string): Promise<User | null> {
+        try {
+            const query =`
+                SELECT uuid, username
+                FROM application_user
+                WHERE username = $1
+                AND password = crypt($2, 'f1nd1ngn3m0')
+            `;
+            const values = [username, password];
+            const { rows } = await db.query<User>(query, values);
+            const [user] = rows;
+            return user || null;
+            
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por username ou password', error);
         }
     }
 
