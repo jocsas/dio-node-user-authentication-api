@@ -32,7 +32,6 @@ class UserRepository {
             return user;
 
         }catch(error){
-            console.log(error)
             throw new DatabaseError('Erro na consulta por ID', error);
         }
     }

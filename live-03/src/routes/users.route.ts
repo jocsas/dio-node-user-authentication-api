@@ -15,7 +15,6 @@ const usersRoute = Router();
 
 usersRoute.get('/users', async (req: Request, res: Response, next: NextFunction) => {
 
-    console.log(req.headers['authorization']);
 
     const users = await userRepository.findAllUsers();
     res.status(StatusCodes.OK).send(users);
@@ -38,8 +37,6 @@ usersRoute.post('/users', async (req: Request, res: Response, next: NextFunction
 
     const uuid = await userRepository.create(newUser)
 
-    console.log(uuid);
-
     res.status(StatusCodes.CREATED).send(uuid)
 });
 
@@ -59,8 +56,6 @@ usersRoute.delete('/users/:uuid', async (req: Request<{ uuid: string }>, res: Re
     await userRepository.remove(uuid)
     
     res.sendStatus(StatusCodes.OK);
-
-    console.log('deleted');
 });
 
 export default usersRoute;
